@@ -1,0 +1,130 @@
+﻿<Window
+    x:Class="HavaDurumu.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HavaDurumu"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="500"
+    Height="390"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <local:DereceToYukseklikConverter x:Key="dereceToYukseklik" />
+        <local:YonToAciConverter x:Key="yonToAci"/>
+        <local:UriToImageSourceConverter x:Key="uriToImage"/>
+        <Style x:Key="ortak" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style
+            x:Key="mavi"
+            BasedOn="{StaticResource ortak}"
+            TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Blue" />
+        </Style>
+        <Style
+            x:Key="siyah"
+            BasedOn="{StaticResource ortak}"
+            TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="gridHavaDurumu">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Image HorizontalAlignment="Left" Source="resimler/derece3.png" />
+        <Rectangle
+            Width="20"
+            Height="{Binding EnYuksek, Converter={StaticResource dereceToYukseklik}}"
+            VerticalAlignment="Bottom"
+            Fill="Red" />
+        <StackPanel Grid.Row="1">
+            <Ellipse
+                Width="40"
+                Height="40"
+                Fill="Red" />
+            <TextBlock Style="{StaticResource mavi}" Text="En Yüksek" />
+            <TextBlock Style="{StaticResource siyah}" Text="{Binding EnYuksek, StringFormat={}{0} derece}" />
+        </StackPanel>
+        <Image
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Source="resimler/derece3.png" />
+        <Rectangle
+            Grid.Column="1"
+            Width="20"
+            Height="{Binding EnDusuk, Converter={StaticResource dereceToYukseklik}}"
+            VerticalAlignment="Bottom"
+            Fill="Red" />
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Ellipse
+                Width="40"
+                Height="40"
+                Fill="Red" />
+            <TextBlock Style="{StaticResource mavi}" Text="En Düşük" />
+            <TextBlock Style="{StaticResource siyah}" Text="{Binding EnDusuk, StringFormat={}{0} derece}" />
+        </StackPanel>
+        <StackPanel Grid.RowSpan="2" Grid.Column="2">
+            <TextBlock Style="{StaticResource mavi}" Text="{Binding Sehir}" />
+            <TextBlock Style="{StaticResource siyah}" Text="{Binding Tarih}" />
+            <Image
+                Width="60"
+                Height="60"
+                Margin="5"
+                Source="{Binding Resim ,Converter={StaticResource uriToImage}}" />
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource mavi}" Text="Sıcaklık" />
+                <TextBlock
+                    Grid.Column="1"
+                    Style="{StaticResource mavi}"
+                    Text="Hissedilen Sıcaklık" />
+                <TextBlock
+                    Grid.Row="1"
+                    Style="{StaticResource siyah}"
+                    Text="{Binding Sicaklik, StringFormat={}{0} derece}" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{StaticResource siyah}"
+                    Text="{Binding HissedilenSicaklik, StringFormat={}{0} derece}" />
+            </Grid>
+            <TextBlock Style="{StaticResource mavi}" Text="Rüzgar" />
+            <Image
+                Width="50"
+                Height="50"
+                Source="/resimler/ruzgar.png" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform Angle="{Binding RuzgarYonu,Converter={StaticResource yonToAci}}" />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+            <TextBlock Style="{StaticResource siyah}" Text="{Binding RuzgarHizi, StringFormat={}{0} m/s}" />
+
+
+
+        </StackPanel>
+
+    </Grid>
+</Window>
